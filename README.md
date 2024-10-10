@@ -2,11 +2,13 @@
 
 Simple executable to match metadata from JSONs to original images/videos.
 
-Same work than [MetadataFixer](https://metadatafixer.com/pricing) but its free!
+Same work than [MetadataFixer](https://metadatafixer.com/pricing) but it's free!
+
+Get started with `python window.py`
 
 ## Wiki 📖
 
-When you download the images from google photos, they lose some metadata such as the date and the coordinates in which they were taken.
+When you download the images from Google Photos, they lose some metadata such as the date and the coordinates in which they were taken.
 
 This algorithm is able to match this information in the image/video from the downloaded JSONs
 
@@ -14,7 +16,7 @@ This algorithm is able to match this information in the image/video from the dow
 
 1. Download your _Google Photos_ media from [Takeout](https://takeout.google.com/)
 
-2. Download and execute GPMatcher.exe
+2. Run `python window.py`
 
 3. [Optional] Type custom suffix used for edited photos (explained in the program)
 
@@ -56,11 +58,4 @@ Sometimes, the algorithm does not recognize the names of the images due to the p
 
 * **anderbggo** - Author
 * **Freepik** - Icon creator
-
-## Donations💰
-
-* BTC -> 14BJjSVqUcLKFkPHBHwNenm2j5qWcwqUyb
-* ETH -> 0x910c055988973b03b9c517bab62198e9ee550f65
-* USDT (TRC20) -> TRAp5UiRoEMvQVzd7d6wDHZg2Uwu6eVvaX
-* USDT (BEP20) -> 0x910c055988973b03b9c517bab62198e9ee550f65
-* LTC -> LcF2dm2gRqHMHLP4snQFb1zyaUwDfLb443
+* **mcgrawia** - Updated to work with Mac

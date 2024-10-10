@@ -1,0 +1,7 @@
+filedate
+piexif
+PySimpleGUI
+Pillow
+mutagen
+pymediainfo
+ffmpeg-python
