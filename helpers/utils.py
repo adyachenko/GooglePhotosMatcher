@@ -83,7 +83,7 @@ def check_if_same_name(title, title_fixed, media_moved, recursion_time):
     else:
         return title_fixed
 
-def merge_folder(browser_path: str, window, edited_word):
+def merge_folder(browser_path: str, edited_word):
     piexif_codecs = [k.casefold() for k in ['TIF', 'TIFF', 'JPEG', 'JPG']]
     video_codecs = [k.casefold() for k in ['MP4', 'MOV']]
 
@@ -106,21 +106,23 @@ def merge_folder(browser_path: str, window, edited_word):
         files_in_dir: List[DirEntry] = list(os.scandir(output_folder))
         files_in_dir.sort(key=lambda s: len(s.name))
     except FileNotFoundError:
-        window['-PROGRESS_LABEL-'].update("Choose a valid directory", visible=True, text_color='red')
+        # window['-PROGRESS_LABEL-'].update("Choose a valid directory", visible=True, text_color='red')
         logging.error("Choose a valid directory.")
         return
 
     json_files = list(filter(lambda x: x.is_file() and x.name.endswith(".json"), files_in_dir))
-    for entry in json_files:
+    total_files = len(json_files)
+    for i, entry in enumerate(json_files):
         if entry.name == "metadata.json":
             continue
 
         with open(entry, encoding="utf8") as f:
             data = json.load(f)
 
-        progress = round(json_files.index(entry) / len(json_files) * 100, 2)
-        window['-PROGRESS_LABEL-'].update(str(progress) + "%", visible=True)
-        window['-PROGRESS_BAR-'].update(progress, visible=True)
+        progress = round(i / total_files * 100, 2)
+        # window['-PROGRESS_LABEL-'].update(str(progress) + "%", visible=True)
+        # window['-PROGRESS_BAR-'].update(progress, visible=True)
+        logging.info(f'\r{i} / {total_files} - {progress}%', end="")
 
         original_title = data['title']
 
@@ -180,8 +182,8 @@ def merge_folder(browser_path: str, window, edited_word):
 
     copy_files_only(output_folder, unmatched_output_folder)
 
-    window['-PROGRESS_BAR-'].update(100, visible=True)
-    window['-PROGRESS_LABEL-'].update(
-        "Matching process finished with " + str(success_counter) + success_message + " and " + str(
-            error_counter) + error_message + ".", visible=True, text_color='#c0ffb3')
+    # window['-PROGRESS_BAR-'].update(100, visible=True)
+    # window['-PROGRESS_LABEL-'].update(
+        # "Matching process finished with " + str(success_counter) + success_message + " and " + str(
+            # error_counter) + error_message + ".", visible=True, text_color='#c0ffb3')
     logging.info(f"Matching process finished with {success_counter} {success_message} and {error_counter} {error_message}.")
