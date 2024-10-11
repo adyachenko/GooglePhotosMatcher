@@ -83,7 +83,7 @@ def check_if_same_name(title, title_fixed, media_moved, recursion_time):
     else:
         return title_fixed
 
-def merge_folder(browser_path: str, edited_word):
+def merge_folder(browser_path: str, edited_word, clear=False, no_copy=False):
     piexif_codecs = [k.casefold() for k in ['TIF', 'TIFF', 'JPEG', 'JPG']]
     video_codecs = [k.casefold() for k in ['MP4', 'MOV']]
 
@@ -99,9 +99,11 @@ def merge_folder(browser_path: str, edited_word):
     edited_word = edited_word or "edited"
 
     try:
-        delete_dir(output_folder)
+        if clear:
+            delete_dir(output_folder)
         create_folders(output_folder, matched_output_folder, unmatched_output_folder, edited_output_folder)
-        copy_folder(original_folder, output_folder)
+        if not no_copy:
+            copy_folder(original_folder, output_folder)
 
         files_in_dir: List[DirEntry] = list(os.scandir(output_folder))
         files_in_dir.sort(key=lambda s: len(s.name))
