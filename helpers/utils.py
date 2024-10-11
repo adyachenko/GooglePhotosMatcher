@@ -115,6 +115,7 @@ def merge_folder(browser_path: str, edited_word, clear=False, no_copy=False):
     json_files.sort(key=lambda s: len(s.name))
     total_files = len(json_files)
     for i, entry in enumerate(json_files):
+        entry_dir = Path(entry.path)
         if entry.name == "metadata.json":
             continue
 
@@ -133,13 +134,13 @@ def merge_folder(browser_path: str, edited_word, clear=False, no_copy=False):
             continue
 
         try:
-            title = search_media(output_folder, original_title, media_moved, edited_output_folder, edited_word)
+            title = search_media(entry_dir, original_title, media_moved, edited_output_folder, edited_word)
         except Exception as e:
             logging.error(f"Error on search_media() with file {original_title}: {e}")
             error_counter += 1
             continue
 
-        filepath = output_folder / title
+        filepath = entry_dir / title
         if title == "None":
             logging.warning(f"{original_title} not found")
             error_counter += 1
@@ -172,8 +173,8 @@ def merge_folder(browser_path: str, edited_word, clear=False, no_copy=False):
 
         set_file_times(filepath, time_stamp)
 
-        os.replace(filepath, matched_output_folder / title)
-        os.remove(output_folder / entry.name)
+        # os.replace(filepath, matched_output_folder / title)
+        # os.remove(output_folder / entry.name)
         media_moved.append(title)
         success_counter += 1
 
