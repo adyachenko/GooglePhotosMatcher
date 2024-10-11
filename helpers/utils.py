@@ -133,6 +133,7 @@ def merge_folder(browser_path: str, edited_word, clear=False, no_copy=False):
             error_counter += 1
             continue
 
+        print(entry_dir / (entry.name.rsplit('.', 1)[0]))
         if os.path.exists(entry_dir / (entry.name.rsplit('.', 1)[0])):
             title = entry.name.rsplit('.', 1)[0]
         else:
