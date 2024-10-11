@@ -52,6 +52,6 @@ def set_exif(filepath: str, lat, lng, altitude, timestamp):
 
         exif_bytes = piexif.dump(exif_dict)
         piexif.insert(exif_bytes, filepath)
-        logging.info(f"Set EXIF data for {filepath}")
+        logging.debug(f"Set EXIF data for {filepath}")
     except Exception as e:
         logging.error(f"Error setting EXIF data for {filepath}: {e}")

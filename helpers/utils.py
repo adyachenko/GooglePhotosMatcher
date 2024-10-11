@@ -16,7 +16,7 @@ def set_file_times(filepath, timestamp):
     import filedate
     f = filedate.File(filepath)
     f.set(created=timestamp, modified=timestamp)
-    logging.info(f"Set file times for {filepath} to {timestamp}")
+    logging.debug(f"Set file times for {filepath} to {timestamp}")
 
 def search_media(path, title, media_moved, non_edited, edited_word):
     title = fix_title(title)
@@ -133,7 +133,6 @@ def merge_folder(browser_path: str, edited_word, clear=False, no_copy=False):
             error_counter += 1
             continue
 
-        print(entry_dir / (entry.name.rsplit('.', 1)[0]))
         if os.path.exists(entry_dir / (entry.name.rsplit('.', 1)[0])):
             title = entry.name.rsplit('.', 1)[0]
         else:

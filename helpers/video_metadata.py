@@ -40,7 +40,7 @@ def set_video_metadata(filepath: str, lat: float, lng: float, timestamp: int):
         # Replace the original file with the temporary file
         shutil.move(temp_filepath, filepath)
 
-        logging.info(f"Set video metadata for {filepath}")
+        logging.debug(f"Set video metadata for {filepath}")
     except subprocess.CalledProcessError as e:
         logging.error(f"Error setting video metadata for {filepath}: {e}")
     except Exception as e:
