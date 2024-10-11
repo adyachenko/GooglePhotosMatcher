@@ -23,3 +23,11 @@ def copy_files_only(source, dest):
         if entity.is_file():
             shutil.move(entity, dest / entity.name)
             logging.info(f"Moved file {entity.name} to {dest}")
+
+def scantree(path):
+    """Recursively yield DirEntry objects for given directory."""
+    for entry in scandir(path):
+        if entry.is_dir(follow_symlinks=False):
+            yield from scantree(entry.path)  # see below for Python 2.x
+        else:
+            yield entry

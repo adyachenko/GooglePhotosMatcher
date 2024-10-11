@@ -5,7 +5,7 @@ from typing import List
 from os import DirEntry
 from pathlib import Path
 import logging
-from .file_operations import create_folders, copy_folder, delete_dir, copy_files_only
+from .file_operations import create_folders, copy_folder, delete_dir, copy_files_only, scantree
 from .photo_metadata import set_exif
 from .video_metadata import set_video_metadata
 
@@ -105,14 +105,14 @@ def merge_folder(browser_path: str, edited_word, clear=False, no_copy=False):
         if not no_copy:
             copy_folder(original_folder, output_folder)
 
-        files_in_dir: List[DirEntry] = list(os.scandir(output_folder))
-        files_in_dir.sort(key=lambda s: len(s.name))
+        files_in_dir: List[DirEntry] = scantree(output_folder)
     except FileNotFoundError:
         # window['-PROGRESS_LABEL-'].update("Choose a valid directory", visible=True, text_color='red')
         logging.error("Choose a valid directory.")
         return
 
     json_files = list(filter(lambda x: x.is_file() and x.name.endswith(".json"), files_in_dir))
+    json_files.sort(key=lambda s: len(s.name))
     total_files = len(json_files)
     for i, entry in enumerate(json_files):
         if entry.name == "metadata.json":
