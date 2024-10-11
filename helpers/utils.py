@@ -18,7 +18,7 @@ def set_file_times(filepath, timestamp):
     f.set(created=timestamp, modified=timestamp)
     logging.debug(f"Set file times for {filepath} to {timestamp}")
 
-def search_media(path, title, media_moved, non_edited, edited_word):
+def search_media(path, title, media_moved, edited_word):
     title = fix_title(title)
     real_title = str(title.rsplit('.', 1)[0] + "-" + edited_word + "." + title.rsplit('.', 1)[1])
     filepath = os.path.join(path, real_title)
@@ -47,15 +47,6 @@ def search_media(path, title, media_moved, non_edited, edited_word):
                                 filepath = os.path.join(path, real_title)
                                 if not os.path.exists(filepath):
                                     real_title = None
-                        else:
-                            move_file_to_folder(filepath, os.path.join(non_edited, title))
-                    else:
-                        move_file_to_folder(filepath, os.path.join(non_edited, title))
-        else:
-            move_file_to_folder(filepath, os.path.join(non_edited, title))
-    else:
-        move_file_to_folder(filepath, os.path.join(non_edited, title))
-
     return str(real_title)
 
 def move_file_to_folder(source, dest):
@@ -89,21 +80,18 @@ def merge_folder(browser_path: str, edited_word, clear=False, no_copy=False):
 
     media_moved = []
     original_folder = Path(browser_path)
-    output_folder = original_folder.parent / (original_folder.name + " - merged")
-    matched_output_folder = output_folder / "matched"
-    edited_output_folder = output_folder / "edited_raw"
-    unmatched_output_folder = output_folder / "unmatched"
+    output_folder = original_folder
 
     error_counter = 0
     success_counter = 0
     edited_word = edited_word or "edited"
 
     try:
-        if clear:
-            delete_dir(output_folder)
-        create_folders(output_folder, matched_output_folder, unmatched_output_folder, edited_output_folder)
-        if not no_copy:
-            copy_folder(original_folder, output_folder)
+        # if clear:
+        #     delete_dir(output_folder)
+        # create_folders(output_folder)
+        # if not no_copy:
+            # copy_folder(original_folder, output_folder)
 
         files_in_dir: List[DirEntry] = scantree(output_folder)
     except FileNotFoundError:
@@ -137,7 +125,7 @@ def merge_folder(browser_path: str, edited_word, clear=False, no_copy=False):
             title = entry.name.rsplit('.', 1)[0]
         else:
             try:
-                title = search_media(entry_dir, original_title, media_moved, edited_output_folder, edited_word)
+                title = search_media(entry_dir, original_title, media_moved, edited_word)
             except Exception as e:
                 logging.error(f"Error on search_media() with file {original_title}: {e}")
                 error_counter += 1
@@ -149,7 +137,7 @@ def merge_folder(browser_path: str, edited_word, clear=False, no_copy=False):
             error_counter += 1
             continue
 
-        logging.info(f"Processing file: {filepath}")
+        logging.debug(f"Processing file: {filepath}")
         if not os.path.exists(filepath):
             logging.error(f"File does not exist: {filepath}")
             error_counter += 1
@@ -176,8 +164,6 @@ def merge_folder(browser_path: str, edited_word, clear=False, no_copy=False):
 
         set_file_times(filepath, time_stamp)
 
-        # os.replace(filepath, matched_output_folder / title)
-        # os.remove(output_folder / entry.name)
         media_moved.append(title)
         success_counter += 1
 
@@ -190,7 +176,7 @@ def merge_folder(browser_path: str, edited_word, clear=False, no_copy=False):
     if error_counter == 1:
         error_message = " error"
 
-    copy_files_only(output_folder, unmatched_output_folder)
+    # copy_files_only(output_folder, unmatched_output_folder)
 
     # window['-PROGRESS_BAR-'].update(100, visible=True)
     # window['-PROGRESS_LABEL-'].update(
