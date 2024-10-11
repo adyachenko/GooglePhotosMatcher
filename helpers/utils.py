@@ -124,7 +124,7 @@ def merge_folder(browser_path: str, edited_word, clear=False, no_copy=False):
         progress = round(i / total_files * 100, 2)
         # window['-PROGRESS_LABEL-'].update(str(progress) + "%", visible=True)
         # window['-PROGRESS_BAR-'].update(progress, visible=True)
-        logging.info(f'\r{i} / {total_files} - {progress}%', end="")
+        print(f'\r{i} / {total_files} - {progress}%', end="")
 
         original_title = data['title']
 
