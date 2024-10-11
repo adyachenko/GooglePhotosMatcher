@@ -115,7 +115,7 @@ def merge_folder(browser_path: str, edited_word, clear=False, no_copy=False):
     json_files.sort(key=lambda s: len(s.name))
     total_files = len(json_files)
     for i, entry in enumerate(json_files):
-        entry_dir = Path(entry.path)
+        entry_dir = Path(entry.path).parent
         if entry.name == "metadata.json":
             continue
 
