@@ -124,9 +124,13 @@ def merge_folder(browser_path: str, edited_word, clear=False, no_copy=False):
         progress = round(i / total_files * 100, 2)
         # window['-PROGRESS_LABEL-'].update(str(progress) + "%", visible=True)
         # window['-PROGRESS_BAR-'].update(progress, visible=True)
-        print(f'\r{i} / {total_files} - {progress}%', end="")
+        logging.info(f'{i} / {total_files} - {progress}%')
 
-        original_title = data['title']
+        original_title = data.get('title')
+        if not original_title:
+            logging.error(f"No original title: {data}")
+            error_counter += 1
+            continue
 
         try:
             title = search_media(output_folder, original_title, media_moved, edited_output_folder, edited_word)
