@@ -133,12 +133,15 @@ def merge_folder(browser_path: str, edited_word, clear=False, no_copy=False):
             error_counter += 1
             continue
 
-        try:
-            title = search_media(entry_dir, original_title, media_moved, edited_output_folder, edited_word)
-        except Exception as e:
-            logging.error(f"Error on search_media() with file {original_title}: {e}")
-            error_counter += 1
-            continue
+        if os.path.exists(entry_dir / (entry.name.rsplit('.', 1)[0])):
+            title = entry.name.rsplit('.', 1)[0]
+        else:
+            try:
+                title = search_media(entry_dir, original_title, media_moved, edited_output_folder, edited_word)
+            except Exception as e:
+                logging.error(f"Error on search_media() with file {original_title}: {e}")
+                error_counter += 1
+                continue
 
         filepath = entry_dir / title
         if title == "None":
