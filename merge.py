@@ -12,7 +12,7 @@ def main():
     args = argparser.parse_args()
     print(args)
 
-    merge_folder(args.folder, '', **args)
+    merge_folder(args.folder, '', clear=args.clear, no_copy=args.no_copy)
 
 
 if __name__ == '__main__':
