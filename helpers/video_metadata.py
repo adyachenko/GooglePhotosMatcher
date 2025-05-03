@@ -35,7 +35,7 @@ def set_video_metadata(filepath: str, lat: float, lng: float, timestamp: int):
         ]
 
         # Run the command
-        subprocess.run(command, check=True)
+        subprocess.run(command, check=True, stdout=subprocess.DEVNULL)
 
         # Replace the original file with the temporary file
         shutil.move(temp_filepath, filepath)
