@@ -31,6 +31,7 @@ def set_video_metadata(filepath: str, lat: float, lng: float, timestamp: int):
             '-metadata', f'com.apple.quicktime.location.ISO6709={location}',
             '-metadata', f'com.apple.quicktime.creationdate={date_time}',
             '-codec', 'copy',
+            '-nostdin', '-y',
             temp_filepath
         ]
 
